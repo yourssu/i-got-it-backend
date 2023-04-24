@@ -22,11 +22,17 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+	implementation("org.springframework.boot:spring-boot-starter-security")
 	runtimeOnly("com.mysql:mysql-connector-j")
 
 	// Swagger
 	implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
 
+	// JWT
+	implementation("io.jsonwebtoken:jjwt:0.9.1")
+
+	testImplementation("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
