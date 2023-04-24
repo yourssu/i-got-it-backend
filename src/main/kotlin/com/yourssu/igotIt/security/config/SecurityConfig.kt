@@ -22,9 +22,14 @@ class SecurityConfig(
     fun webSecurityCustomizer(): WebSecurityCustomizer {
         return WebSecurityCustomizer { web ->
             web.ignoring()
-                .regexMatchers("/api/v1/auth/sign-in/kakao")
-                .regexMatchers("/api/v1/auth/sign-in/info")
-                .regexMatchers("/")  // swagger
+                .antMatchers("/api/v1/auth/**")
+                .antMatchers("/")
+                .antMatchers("/swagger-ui/**")
+                .antMatchers("/v3/api-docs/**")
+//                .regexMatchers("/api/v1/auth/sign-in/kakao")
+//                .regexMatchers("/api/v1/auth/sign-in/info")
+//                .regexMatchers("/")
+//                .regexMatchers("/swagger-ui/**")  // swagger
         }
     }
 

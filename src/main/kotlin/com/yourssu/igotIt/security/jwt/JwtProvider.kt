@@ -16,6 +16,6 @@ class JwtProvider(
         val userId = jwtExtractor.extractUserId(token)
         val user = userRepository.findById(userId)
             .orElseThrow { RuntimeException("Jwt 토큰에 해당하는 user가 존재하지 않습니다.") }
-        return UsernamePasswordAuthenticationToken(user, "", listOf(SimpleGrantedAuthority("ROLE_USER")))
+        return UsernamePasswordAuthenticationToken(user, "", listOf(SimpleGrantedAuthority("USER")))
     }
 }
