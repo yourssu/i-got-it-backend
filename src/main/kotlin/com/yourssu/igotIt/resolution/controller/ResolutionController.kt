@@ -6,6 +6,7 @@ import com.yourssu.igotIt.resolution.dto.ResolutionCreateResponse
 import com.yourssu.igotIt.resolution.service.ResolutionService
 import com.yourssu.igotIt.user.domain.User
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -19,7 +20,7 @@ class ResolutionController(
 
     @PostMapping("/resolutions")
     fun create(
-        @RequestBody request: ResolutionCreateRequest,
+        @Validated @RequestBody request: ResolutionCreateRequest,
         @LoginUser user: User
     ) : ResponseEntity<ResolutionCreateResponse> {
         val response = resolutionService.create(request, user)
