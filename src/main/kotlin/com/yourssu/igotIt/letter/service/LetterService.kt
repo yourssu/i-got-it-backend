@@ -5,7 +5,6 @@ import com.yourssu.igotIt.letter.domain.LetterRepository
 import com.yourssu.igotIt.letter.dto.LetterCreateRequest
 import com.yourssu.igotIt.letter.dto.LetterCreateResponse
 import com.yourssu.igotIt.resolution.domain.ResolutionQueryHandler
-import com.yourssu.igotIt.resolution.domain.ResolutionRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
