@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.security.SecurityRequirement
 import io.swagger.v3.oas.models.security.SecurityScheme
+import io.swagger.v3.oas.models.servers.Server
 import org.springdoc.core.SpringDocUtils
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -30,6 +31,9 @@ class SwaggerConfig {
         .components(components())
         .info(apiInfo())
         .addSecurityItem(securityItem())
+        .addServersItem(Server().apply {
+            this.url = "/"
+        })
 
     private fun apiInfo() = Info()
         .title("I GOT IT :: API DOCS")
