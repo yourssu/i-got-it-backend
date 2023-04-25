@@ -4,6 +4,7 @@ import com.yourssu.igotIt.letter.domain.Letter
 import com.yourssu.igotIt.letter.domain.LetterRepository
 import com.yourssu.igotIt.letter.dto.LetterCreateRequest
 import com.yourssu.igotIt.letter.dto.LetterCreateResponse
+import com.yourssu.igotIt.resolution.domain.Resolution
 import com.yourssu.igotIt.resolution.domain.ResolutionQueryHandler
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -26,5 +27,13 @@ class LetterService(
         }.run { letterRepository.save(this) }
 
         return LetterCreateResponse(letter.id!!)
+    }
+
+    fun createLetterForMe(resolution: Resolution, content: String, nickname: String) {
+        Letter(
+            nickname = nickname,
+            content = content,
+            resolution = resolution
+        ).run { letterRepository.save(this) }
     }
 }

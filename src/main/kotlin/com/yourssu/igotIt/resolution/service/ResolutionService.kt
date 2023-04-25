@@ -1,8 +1,6 @@
 package com.yourssu.igotIt.resolution.service
 
-import com.yourssu.igotIt.letter.domain.Letter
-import com.yourssu.igotIt.letter.domain.LetterQueryHandler
-import com.yourssu.igotIt.letter.domain.LetterRepository
+import com.yourssu.igotIt.letter.service.LetterService
 import com.yourssu.igotIt.resolution.domain.Resolution
 import com.yourssu.igotIt.resolution.domain.ResolutionRepository
 import com.yourssu.igotIt.resolution.dto.ResolutionCreateRequest
@@ -14,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class ResolutionService(
     private val resolutionRepository: ResolutionRepository,
-    private val letterRepository: LetterRepository
+    private val letterService: LetterService
 ) {
 
     @Transactional
@@ -28,16 +26,8 @@ class ResolutionService(
             )
         }.run { resolutionRepository.save(this) }
 
-        createLetter(resolution, dto.letter, user.nickname!!)
+        letterService.createLetterForMe(resolution, dto.letter, user.nickname!!)
 
         return ResolutionCreateResponse(resolution.id!!)
-    }
-
-    private fun createLetter(resolution: Resolution, content: String, nickname: String) {
-        Letter(
-            nickname = nickname,
-            content = content,
-            resolution = resolution
-        ).run { letterRepository.save(this) }
     }
 }
