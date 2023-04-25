@@ -11,11 +11,11 @@ class User (
     @field:GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    @field:Column(nullable = false)
+    @field:Column(nullable = false, unique = true)
     val email: String,
 
-    @field:Column(nullable = false)
-    var nickname: String? = ""
+    @field:Column(nullable = true)
+    var nickname: String? = null
 
 ) : BaseTimeEntity() {
 
