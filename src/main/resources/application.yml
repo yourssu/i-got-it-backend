@@ -21,3 +21,14 @@ springdoc:
   swagger-ui:
     path: /
     disable-swagger-default-url: true
+
+jwt:
+  secret-key: ${SECRET_KEY}
+  accessTokenExp: ${ACCESSTOKEN_EXP}
+
+oauth:
+  kakao:
+    client-id: ${CLIENT_ID}
+    url:
+      auth: https://kauth.kakao.com
+      api: https://kapi.kakao.com
