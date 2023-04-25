@@ -17,22 +17,29 @@ class AuthService(
     private val jwtGenerator: JwtGenerator
 ) {
 
+    @Transactional
     fun login(dto: OAuthLoginRequest): LoginResponseDto {
         val oAuthInfo = requestOAuthInfoService.request(dto)
-        val userId = findOrCreateUser(oAuthInfo)
-        val token = jwtGenerator.generateAccessToken(userId)
+        val user = findOrCreateUser(oAuthInfo)
+        val token = jwtGenerator.generateAccessToken(user.id!!)
 
-        return LoginResponseDto(userId, token)
+        return generateDto(user, token)
     }
 
-    private fun findOrCreateUser(oAuthInfo: OAuthInfo): Long {
+    private fun findOrCreateUser(oAuthInfo: OAuthInfo): User {
         return userRepository.findByEmail(oAuthInfo.getEmail())
-            ?.id ?: createUser(oAuthInfo)
+             ?: createUser(oAuthInfo)
     }
 
-    private fun createUser(oAuthInfo: OAuthInfo): Long {
-        val user = userRepository.save(User(email = oAuthInfo.getEmail()))
-        return user.id!!
+    private fun createUser(oAuthInfo: OAuthInfo): User {
+        return userRepository.save(User(email = oAuthInfo.getEmail()))
+    }
+
+    private fun generateDto(user: User, token: String): LoginResponseDto {
+        if (user.nickname != null) {
+            return LoginResponseDto(user.id!!, false, token)
+        }
+        return LoginResponseDto(user.id!!, true, token)
     }
 
     @Transactional
