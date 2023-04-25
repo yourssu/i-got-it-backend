@@ -8,6 +8,7 @@ import com.yourssu.igotIt.security.jwt.JwtGenerator
 import com.yourssu.igotIt.user.domain.User
 import com.yourssu.igotIt.user.domain.UserRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AuthService(
@@ -34,7 +35,9 @@ class AuthService(
         return user.id!!
     }
 
+    @Transactional
     fun updateInfo(dto: LoginInfoRequestDto, user: User) {
         user.updateNickname(dto.nickname)
+        userRepository.save(user)
     }
 }
