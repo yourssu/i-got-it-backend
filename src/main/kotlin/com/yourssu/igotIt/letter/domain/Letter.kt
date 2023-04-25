@@ -1,6 +1,7 @@
 package com.yourssu.igotIt.letter.domain
 
 import com.yourssu.igotIt.common.domain.BaseTimeEntity
+import com.yourssu.igotIt.resolution.domain.Resolution
 import javax.persistence.*
 
 @Entity
@@ -14,5 +15,10 @@ class Letter(
     val nickname: String,
 
     @field:Column(nullable = false)
-    val content: String
+    val content: String,
+
+    @field:ManyToOne(fetch = FetchType.LAZY)
+    @field:JoinColumn(name = "resolution_id")
+    val resolution: Resolution
+
 ) : BaseTimeEntity()
