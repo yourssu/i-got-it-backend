@@ -1,6 +1,7 @@
 package com.yourssu.igotIt.resolution.domain
 
 import com.yourssu.igotIt.common.domain.BaseTimeEntity
+import com.yourssu.igotIt.resolution.domain.vo.Status
 import com.yourssu.igotIt.user.domain.User
 import javax.persistence.*
 
@@ -16,6 +17,9 @@ class Resolution (
 
     @field:Column(nullable = false)
     val content: String,
+
+    @field:Enumerated(EnumType.STRING)
+    val status: Status,
 
     @field:Column(nullable = true)
     val email: String? = null,

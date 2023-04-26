@@ -1,10 +1,14 @@
 package com.yourssu.igotIt.resolution.service
 
+import com.yourssu.igotIt.common.utils.TimeUtil
 import com.yourssu.igotIt.letter.service.LetterService
 import com.yourssu.igotIt.resolution.domain.Resolution
+import com.yourssu.igotIt.resolution.domain.ResolutionQueryHandler
 import com.yourssu.igotIt.resolution.domain.ResolutionRepository
+import com.yourssu.igotIt.resolution.domain.vo.Status
 import com.yourssu.igotIt.resolution.dto.ResolutionCreateRequest
 import com.yourssu.igotIt.resolution.dto.ResolutionCreateResponse
+import com.yourssu.igotIt.resolution.dto.ResolutionGetResponse
 import com.yourssu.igotIt.user.domain.User
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -12,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class ResolutionService(
     private val resolutionRepository: ResolutionRepository,
+    private val resolutionQueryHandler: ResolutionQueryHandler,
     private val letterService: LetterService
 ) {
 
@@ -21,6 +26,7 @@ class ResolutionService(
             Resolution(
                 period = period,
                 content = content,
+                status = Status.INPROGRESS,
                 email = mail,
                 user = user
             )
@@ -29,5 +35,20 @@ class ResolutionService(
         letterService.createLetterForMe(resolution, dto.letter, user.nickname!!)
 
         return ResolutionCreateResponse(resolution.id!!)
+    }
+
+    @Transactional(readOnly = true)
+    fun get(resolutionId: Long): ResolutionGetResponse {
+        val resolution = resolutionQueryHandler.findById(resolutionId)
+        val dday = TimeUtil.calculateDday(resolution.createdAt!!, resolution.period)
+
+        return with(resolution) {
+            ResolutionGetResponse(
+                nickname = user.nickname!!,
+                content = content,
+                dday = dday,
+                status = status
+            )
+        }
     }
 }
