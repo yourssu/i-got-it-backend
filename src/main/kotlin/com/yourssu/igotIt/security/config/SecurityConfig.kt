@@ -26,8 +26,8 @@ class SecurityConfig(
         return WebSecurityCustomizer { web ->
             web.ignoring()
                 .antMatchers("/api/v1/auth/sign-in/kakao")
-                .antMatchers(HttpMethod.POST, "/api/v1/resolutions/**/letters")
-                .antMatchers(HttpMethod.GET, "/api/v1/resolutions/**")
+                .antMatchers(HttpMethod.POST, "/api/v1/resolutions/*/letters")
+                .antMatchers(HttpMethod.GET, "/api/v1/resolutions/*")
                 .antMatchers("/")
                 .antMatchers("/swagger-ui/**")
                 .antMatchers("/v3/api-docs/**")
@@ -40,7 +40,7 @@ class SecurityConfig(
             .httpBasic { it.disable() }
             .headers { header -> header.frameOptions { it.disable() }}
             .csrf { it.disable() }
-            .cors { it.disable() }
+            .cors { it.configurationSource(corsConfigurationSource()) }
             .logout { it.disable() }
             .formLogin { it.disable() }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
