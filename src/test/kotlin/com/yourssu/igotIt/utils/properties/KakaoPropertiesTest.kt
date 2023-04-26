@@ -1,4 +1,4 @@
-package com.yourssu.igotIt.properties
+package com.yourssu.igotIt.utils.properties
 
 import com.yourssu.igotIt.auth.infra.kakao.KakaoProperties
 import org.assertj.core.api.Assertions.assertThat
