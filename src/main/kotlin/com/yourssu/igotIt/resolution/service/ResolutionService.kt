@@ -26,6 +26,7 @@ class ResolutionService(
             Resolution(
                 period = period,
                 content = content,
+                status = Status.INPROGRESS,
                 email = mail,
                 user = user
             )
@@ -40,7 +41,6 @@ class ResolutionService(
     fun get(resolutionId: Long): ResolutionGetResponse {
         val resolution = resolutionQueryHandler.findById(resolutionId)
         val dday = TimeUtil.calculateDday(resolution.createdAt!!, resolution.period)
-        val status = getStatus(dday)
 
         return with(resolution) {
             ResolutionGetResponse(
@@ -50,9 +50,5 @@ class ResolutionService(
                 status = status
             )
         }
-    }
-
-    private fun getStatus(dday: Int): Status {
-        return if(dday != 0) Status.INPROGRESS else Status.DONE
     }
 }
