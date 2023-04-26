@@ -37,9 +37,9 @@ class AuthService(
 
     private fun generateDto(user: User, token: String): LoginResponseDto {
         if (user.nickname != null) {
-            return LoginResponseDto(user.id!!, false, token)
+            return LoginResponseDto(user.id!!, false, user.nickname, token)
         }
-        return LoginResponseDto(user.id!!, true, token)
+        return LoginResponseDto(user.id!!, true, null, token)
     }
 
     @Transactional
