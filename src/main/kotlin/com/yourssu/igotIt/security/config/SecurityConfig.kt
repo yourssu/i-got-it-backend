@@ -23,6 +23,7 @@ class SecurityConfig(
         return WebSecurityCustomizer { web ->
             web.ignoring()
                 .antMatchers("/api/v1/auth/sign-in/kakao")
+                .antMatchers("/api/v1/**/letters")
                 .antMatchers("/")
                 .antMatchers("/swagger-ui/**")
                 .antMatchers("/v3/api-docs/**")
