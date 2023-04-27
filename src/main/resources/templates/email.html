@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div style="margin:10px;">
+    <h2>[아가릿!] 당신의 결심은 아가릿인가요, igotit인가요?</h2>
+    <p th:text="${period + '일 전.... 본인 스스로 했던 결심을 기억하시나요?'}"></p>
+    <p>결심에 대해 우렁차게 뱉었던 말을 주워담을 시간이에요.</p>
+    <br>
+    <h3 th:text="${'결심: ' + content}"></h3>
+    <br>
+    <p th:text="${'아가릿은 ' + nickname + '님의 결심이 이뤄졌길 진심으로 바랍니다^O^'}"></p>
+    <p>아 참, <a th:href="@{link}">아가릿 링크</a> 를 통해 친구들이 작성했던 비밀댓글을 확인하는 것도 잊지 마세요</p>
+    <br>
+</div>
+
+</body>
+</html>
