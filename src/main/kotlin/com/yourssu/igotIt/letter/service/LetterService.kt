@@ -4,8 +4,10 @@ import com.yourssu.igotIt.letter.domain.Letter
 import com.yourssu.igotIt.letter.domain.LetterRepository
 import com.yourssu.igotIt.letter.dto.LetterCreateRequest
 import com.yourssu.igotIt.letter.dto.LetterCreateResponse
+import com.yourssu.igotIt.letter.dto.LetterGetResponse
 import com.yourssu.igotIt.resolution.domain.Resolution
 import com.yourssu.igotIt.resolution.domain.ResolutionQueryHandler
+import com.yourssu.igotIt.resolution.domain.ResolutionRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -35,5 +37,19 @@ class LetterService(
             content = content,
             resolution = resolution
         ).run { letterRepository.save(this) }
+    }
+
+    // TODO: userId와 결심상태에 따라 잠금상태인지 아닌지 boolean 값 LetterGetResponse에 추가
+    fun get(resolutionId: Long): LetterGetResponse {
+        val resolution = resolutionQueryHandler.findById(resolutionId)
+        val letters = letterRepository.findAllByResolution(resolution)
+            .map { letter ->  with(letter) {
+                LetterGetResponse.LetterDto(
+                    nickname = nickname,
+                    content = content
+                ) }
+            }.toMutableList()
+
+        return LetterGetResponse(letters)
     }
 }
