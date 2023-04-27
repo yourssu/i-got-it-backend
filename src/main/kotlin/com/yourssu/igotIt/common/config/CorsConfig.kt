@@ -12,5 +12,6 @@ class CorsConfig : WebMvcConfigurer {
         corsRegistry.addMapping("/**")
             .allowedOrigins("*")
             .allowedMethods("*")
+            .allowedHeaders("*")
     }
 }
