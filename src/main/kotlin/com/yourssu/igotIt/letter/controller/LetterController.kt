@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import javax.persistence.Id
 
 @RestController
 @RequestMapping("/api/v1")
@@ -29,8 +31,10 @@ class LetterController(
     }
 
     @GetMapping("/resolutions/{resolutionId}/letters")
-    fun get(@PathVariable resolutionId: Long): ResponseEntity<LetterGetResponse> {
-        val response = letterService.get(resolutionId)
+    fun get(
+        @RequestParam userId: Long? = null,
+        @PathVariable resolutionId: Long): ResponseEntity<LetterGetResponse> {
+        val response = letterService.get(resolutionId, userId)
         return ResponseEntity.ok(response)
     }
 }
