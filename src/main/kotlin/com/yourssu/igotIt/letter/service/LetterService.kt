@@ -8,6 +8,7 @@ import com.yourssu.igotIt.letter.dto.LetterGetResponse
 import com.yourssu.igotIt.resolution.domain.Resolution
 import com.yourssu.igotIt.resolution.domain.ResolutionQueryHandler
 import com.yourssu.igotIt.resolution.domain.ResolutionRepository
+import com.yourssu.igotIt.resolution.domain.vo.Status
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -39,9 +40,10 @@ class LetterService(
         ).run { letterRepository.save(this) }
     }
 
-    // TODO: userId와 결심상태에 따라 잠금상태인지 아닌지 boolean 값 LetterGetResponse에 추가
-    fun get(resolutionId: Long): LetterGetResponse {
+    fun get(resolutionId: Long, currentUserId: Long?): LetterGetResponse {
         val resolution = resolutionQueryHandler.findById(resolutionId)
+        val isLocked = isLocked(currentUserId, resolution)
+
         val letters = letterRepository.findAllByResolution(resolution)
             .map { letter ->  with(letter) {
                 LetterGetResponse.LetterDto(
@@ -50,6 +52,17 @@ class LetterService(
                 ) }
             }.toMutableList()
 
-        return LetterGetResponse(letters)
+        return LetterGetResponse(isLocked, letters)
+    }
+
+    private fun isLocked(userId: Long?, resolution: Resolution): Boolean {
+        if (!resolution.status.isDone()) {
+            return true
+        }
+        return !isResolutionWriter(userId, resolution)
+    }
+
+    fun isResolutionWriter(userId: Long?, resolution: Resolution): Boolean {
+        return (userId != null && userId == resolution.user.id)
     }
 }
