@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -28,6 +27,7 @@ class SecurityConfig(
                 .antMatchers("/api/v1/auth/sign-in/kakao")
                 .antMatchers(HttpMethod.POST, "/api/v1/resolutions/*/letters")
                 .antMatchers(HttpMethod.GET, "/api/v1/resolutions/*")
+                .antMatchers(HttpMethod.GET, "/api/v1/resolutions/*/letters")
                 .antMatchers("/")
                 .antMatchers("/swagger-ui/**")
                 .antMatchers("/v3/api-docs/**")

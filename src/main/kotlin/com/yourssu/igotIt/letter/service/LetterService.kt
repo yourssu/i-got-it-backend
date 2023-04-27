@@ -4,8 +4,11 @@ import com.yourssu.igotIt.letter.domain.Letter
 import com.yourssu.igotIt.letter.domain.LetterRepository
 import com.yourssu.igotIt.letter.dto.LetterCreateRequest
 import com.yourssu.igotIt.letter.dto.LetterCreateResponse
+import com.yourssu.igotIt.letter.dto.LetterGetResponse
 import com.yourssu.igotIt.resolution.domain.Resolution
 import com.yourssu.igotIt.resolution.domain.ResolutionQueryHandler
+import com.yourssu.igotIt.resolution.domain.ResolutionRepository
+import com.yourssu.igotIt.resolution.domain.vo.Status
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -35,5 +38,31 @@ class LetterService(
             content = content,
             resolution = resolution
         ).run { letterRepository.save(this) }
+    }
+
+    fun get(resolutionId: Long, currentUserId: Long?): LetterGetResponse {
+        val resolution = resolutionQueryHandler.findById(resolutionId)
+        val isLocked = isLocked(currentUserId, resolution)
+
+        val letters = letterRepository.findAllByResolution(resolution)
+            .map { letter ->  with(letter) {
+                LetterGetResponse.LetterDto(
+                    nickname = nickname,
+                    content = content
+                ) }
+            }.toMutableList()
+
+        return LetterGetResponse(isLocked, letters)
+    }
+
+    private fun isLocked(userId: Long?, resolution: Resolution): Boolean {
+        if (!resolution.status.isDone()) {
+            return true
+        }
+        return !isResolutionWriter(userId, resolution)
+    }
+
+    fun isResolutionWriter(userId: Long?, resolution: Resolution): Boolean {
+        return (userId != null && userId == resolution.user.id)
     }
 }
