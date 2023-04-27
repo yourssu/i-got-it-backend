@@ -2,9 +2,11 @@ package com.yourssu.igotIt.letter.controller
 
 import com.yourssu.igotIt.letter.dto.LetterCreateRequest
 import com.yourssu.igotIt.letter.dto.LetterCreateResponse
+import com.yourssu.igotIt.letter.dto.LetterGetResponse
 import com.yourssu.igotIt.letter.service.LetterService
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -23,6 +25,12 @@ class LetterController(
         @PathVariable resolutionId: Long
     ) : ResponseEntity<LetterCreateResponse> {
         val response = letterService.create(request, resolutionId)
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("/resolutions/{resolutionId}/letters")
+    fun get(@PathVariable resolutionId: Long): ResponseEntity<LetterGetResponse> {
+        val response = letterService.get(resolutionId)
         return ResponseEntity.ok(response)
     }
 }
