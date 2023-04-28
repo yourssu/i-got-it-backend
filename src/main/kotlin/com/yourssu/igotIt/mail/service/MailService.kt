@@ -1,5 +1,6 @@
-package com.yourssu.igotIt.mail
+package com.yourssu.igotIt.mail.service
 
+import com.yourssu.igotIt.mail.domain.MailRequest
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
