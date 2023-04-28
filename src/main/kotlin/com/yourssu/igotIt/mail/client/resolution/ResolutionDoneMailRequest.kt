@@ -1,4 +1,4 @@
-package com.yourssu.igotIt.mail
+package com.yourssu.igotIt.mail.client.resolution
 
 import com.yourssu.igotIt.mail.domain.MailRequest
 import com.yourssu.igotIt.resolution.domain.Resolution
