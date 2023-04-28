@@ -3,7 +3,9 @@ package com.yourssu.igotIt.security.config
 import com.yourssu.igotIt.security.jwt.JwtProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 import org.springframework.http.HttpMethod
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
@@ -15,6 +17,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
     private val jwtProvider: JwtProvider
 ) {
@@ -34,7 +37,8 @@ class SecurityConfig(
         }
     }
 
-    @Bean
+    @Bean(value = ["securityConfigFilterChain"])
+    @Order(1)
     fun filterChain(http: HttpSecurity): DefaultSecurityFilterChain {
         http
             .httpBasic { it.disable() }
