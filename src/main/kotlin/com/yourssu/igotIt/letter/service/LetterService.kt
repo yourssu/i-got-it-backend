@@ -7,8 +7,7 @@ import com.yourssu.igotIt.letter.dto.LetterCreateResponse
 import com.yourssu.igotIt.letter.dto.LetterGetResponse
 import com.yourssu.igotIt.resolution.domain.Resolution
 import com.yourssu.igotIt.resolution.domain.ResolutionQueryHandler
-import com.yourssu.igotIt.resolution.domain.ResolutionRepository
-import com.yourssu.igotIt.resolution.domain.vo.Status
+import com.yourssu.igotIt.user.domain.User
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -40,6 +39,7 @@ class LetterService(
         ).run { letterRepository.save(this) }
     }
 
+    @Transactional(readOnly = true)
     fun get(resolutionId: Long, currentUserId: Long?): LetterGetResponse {
         val resolution = resolutionQueryHandler.findById(resolutionId)
         val isLocked = isLocked(currentUserId, resolution)
@@ -64,5 +64,14 @@ class LetterService(
 
     fun isResolutionWriter(userId: Long?, resolution: Resolution): Boolean {
         return (userId != null && userId == resolution.user.id)
+    }
+
+    fun delete(resolutionId: Long, letterId: Long, user: User) {
+        val resolution = resolutionQueryHandler.findById(resolutionId)
+        if (!isResolutionWriter(user.id, resolution)) {
+            throw RuntimeException("결심 생성자만 쪽지를 삭제할 수 있습니다.")
+        }
+
+        letterRepository.deleteById(letterId)
     }
 }
