@@ -4,6 +4,7 @@ import com.yourssu.igotIt.auth.domain.OAuthInfo
 import com.yourssu.igotIt.auth.domain.OAuthLoginRequest
 import com.yourssu.igotIt.auth.dto.LoginInfoRequestDto
 import com.yourssu.igotIt.auth.dto.LoginResponseDto
+import com.yourssu.igotIt.resolution.domain.ResolutionRepository
 import com.yourssu.igotIt.security.jwt.JwtGenerator
 import com.yourssu.igotIt.user.domain.User
 import com.yourssu.igotIt.user.domain.UserRepository
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 class AuthService(
     private val requestOAuthInfoService: RequestOAuthInfoService,
     private val userRepository: UserRepository,
+    private val resolutionRepository: ResolutionRepository,
     private val jwtGenerator: JwtGenerator
 ) {
 
@@ -22,8 +24,9 @@ class AuthService(
         val oAuthInfo = requestOAuthInfoService.request(dto)
         val user = findOrCreateUser(oAuthInfo)
         val token = jwtGenerator.generateAccessToken(user.id!!)
+        val resolutionId = resolutionRepository.findByUser(user)?.id
 
-        return generateDto(user, token)
+        return LoginResponseDto(user.id, user.nickname, resolutionId, token)
     }
 
     private fun findOrCreateUser(oAuthInfo: OAuthInfo): User {
@@ -32,14 +35,9 @@ class AuthService(
     }
 
     private fun createUser(oAuthInfo: OAuthInfo): User {
-        return userRepository.save(User(email = oAuthInfo.getEmail()))
-    }
-
-    private fun generateDto(user: User, token: String): LoginResponseDto {
-        if (user.nickname != null) {
-            return LoginResponseDto(user.id!!, false, user.nickname, token)
+        return User(email = oAuthInfo.getEmail()).run {
+            userRepository.save(this)
         }
-        return LoginResponseDto(user.id!!, true, null, token)
     }
 
     @Transactional
