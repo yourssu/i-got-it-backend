@@ -31,6 +31,7 @@ class SecurityConfig(
                 .antMatchers("/")
                 .antMatchers("/swagger-ui/**")
                 .antMatchers("/v3/api-docs/**")
+                .antMatchers("/api/v1/mail/test")
         }
     }
 
