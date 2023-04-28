@@ -39,7 +39,7 @@ class MailService(
             setVariable("period", resolution.period)
             setVariable("content", resolution.content)
             setVariable("nickname", user.nickname)
-            setVariable("link", "https://letter.yourssu.com")
+            setVariable("link", "https://letter.yourssu.com/")
         }.run { templateEngine.process(type, this) }
     }
 }
