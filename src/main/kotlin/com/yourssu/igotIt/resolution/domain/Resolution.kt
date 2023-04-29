@@ -19,7 +19,7 @@ class Resolution (
     val content: String,
 
     @field:Enumerated(EnumType.STRING)
-    val status: Status,
+    var status: Status,
 
     @field:Column(nullable = true)
     val email: String? = null,
@@ -28,4 +28,9 @@ class Resolution (
     @field:JoinColumn(name = "user_id")
     val user: User
 
-) : BaseTimeEntity()
+) : BaseTimeEntity() {
+
+    fun updateStatus() {
+        this.status = Status.DONE
+    }
+}

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div style="margin:100px;">
+    <h1 th:text="${'안녕하세요. ' + nickname + '님'}"></h1>
+    <h1> 아가리 파이터들을 위한 결심 플랫폼 IGOTIT 입니다.</h1>
+    <br>
+    <p> 아래 링크로 들어가 응원 쪽지들을 확인하세요.</p>
+    <br>
+
+    <div align="center" style="border:1px solid black; font-family:verdana;">
+        <h3 style="color:blue"> 링크입니다. </h3>
+        <div style="font-size:130%" th:text="${link}"> </div>
+    </div>
+    <br/>
+</div>
+
+</body>
+</html>

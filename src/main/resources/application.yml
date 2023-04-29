@@ -13,8 +13,19 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         format_sql: true
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SMTPEMAIL}
+    password: ${SMTPPASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
 server:
   port: ${APPLICATION_PORT}
+  igotit:
+    url: ${IGOTIT_URL}
 
 springdoc:
   default-produces-media-type: application/json;charset=UTF-8

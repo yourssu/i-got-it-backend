@@ -32,6 +32,11 @@ dependencies {
 	// JWT
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
 
+	// SMTP
+	implementation("org.springframework.boot:spring-boot-starter-mail:2.6.7")
+	implementation ("org.springframework.boot:spring-boot-starter-thymeleaf")
+	implementation ("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
+
 	testImplementation("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
