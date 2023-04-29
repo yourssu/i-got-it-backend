@@ -6,5 +6,5 @@ interface MailRequest {
     fun email(): String
     fun subject(): String
     fun type(): String
-    fun createContext(): Context
+    fun createContext(baseUrl: String): Context
 }
