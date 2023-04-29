@@ -44,6 +44,7 @@ class ResolutionService(
 
         return with(resolution) {
             ResolutionGetResponse(
+                userId = user.id!!,
                 nickname = user.nickname!!,
                 content = content,
                 dday = dday,
