@@ -45,8 +45,9 @@ class LetterService(
         val isLocked = isLocked(currentUserId, resolution)
 
         val letters = letterRepository.findAllByResolution(resolution)
-            .map { letter ->  with(letter) {
+            .map { with(it) {
                 LetterGetResponse.LetterDto(
+                    letterId = id!!,
                     nickname = nickname,
                     content = content
                 ) }
