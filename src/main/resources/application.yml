@@ -25,7 +25,7 @@ spring:
 server:
   port: ${APPLICATION_PORT}
   igotit:
-    url: https://i-got-it.soomsil.de
+    url: ${IGOTIT_URL}
 
 springdoc:
   default-produces-media-type: application/json;charset=UTF-8
