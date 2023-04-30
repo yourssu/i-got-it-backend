@@ -8,4 +8,8 @@ enum class Status {
     fun isDone(): Boolean {
         return this == DONE
     }
+
+    fun isInProgress(): Boolean {
+        return this == INPROGRESS
+    }
 }
