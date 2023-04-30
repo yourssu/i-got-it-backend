@@ -52,4 +52,16 @@ class ResolutionService(
             )
         }
     }
+
+    fun delete(resolutionId: Long, user: User) {
+        val resolution = resolutionQueryHandler.findById(resolutionId)
+        if (!checkPermission(resolution, user)) {
+            throw RuntimeException("결심 작성자만 삭제 가능합니다.")
+        }
+        resolutionRepository.deleteById(resolutionId)
+    }
+
+    private fun checkPermission(resolution: Resolution, user: User): Boolean {
+        return resolution.user.id == user.id
+    }
 }
