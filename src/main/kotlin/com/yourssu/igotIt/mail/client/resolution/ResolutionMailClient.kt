@@ -5,6 +5,7 @@ import com.yourssu.igotIt.mail.domain.MailClient
 import com.yourssu.igotIt.mail.domain.MailRequest
 import com.yourssu.igotIt.resolution.domain.Resolution
 import com.yourssu.igotIt.resolution.domain.ResolutionRepository
+import com.yourssu.igotIt.resolution.domain.vo.Status
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -13,7 +14,7 @@ class ResolutionMailClient(
     private val resolutionRepository: ResolutionRepository
 ) : MailClient {
 
-    // TODO: 여기서 dto를 만들어서 email, resolution, user를 리스트로 만들어 mailHourJob -> mailService에 넘겨주자
+    // 여기서 email, resolution, user를 dto 리스트로 만들어 mailHourJob -> mailService에 넘겨주자
     @Transactional
     override fun generateRequest(): List<MailRequest> {
         return resolutionRepository.findAll()
@@ -23,10 +24,12 @@ class ResolutionMailClient(
     }
 
     private fun isDone(resolution: Resolution): Boolean {
+        val isInProgress = resolution.status.isInProgress()
         val dday = with(resolution) {
             TimeUtil.calculateDday(createdAt!!, period)
         }
-        return dday <= 0
+
+        return isInProgress && (dday <= 0)
     }
 
     private fun isPresentEmail(resolution: Resolution): Boolean {
