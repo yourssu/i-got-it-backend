@@ -25,6 +25,9 @@ class Resolution (
     @field:Column(nullable = true)
     val email: String? = null,
 
+    @field:Column(nullable = false)
+    val uniqueId: String,
+
     @field:ManyToOne(fetch = FetchType.LAZY)
     @field:JoinColumn(name = "user_id")
     val user: User,

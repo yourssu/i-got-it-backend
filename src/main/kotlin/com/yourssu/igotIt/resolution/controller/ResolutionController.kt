@@ -35,4 +35,10 @@ class ResolutionController(
     fun delete(@PathVariable resolutionId: Long, @LoginUser user: User) {
         resolutionService.delete(resolutionId, user)
     }
+
+    @GetMapping("/resolutions/{resolutionId}/uuid")
+    fun getUniqueId(@PathVariable resolutionId: Long) {
+        val response = resolutionService.getUniqueId(resolutionId)
+        ResponseEntity.ok(response)
+    }
 }

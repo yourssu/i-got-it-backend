@@ -9,9 +9,11 @@ import com.yourssu.igotIt.resolution.domain.vo.Status
 import com.yourssu.igotIt.resolution.dto.ResolutionCreateRequest
 import com.yourssu.igotIt.resolution.dto.ResolutionCreateResponse
 import com.yourssu.igotIt.resolution.dto.ResolutionGetResponse
+import com.yourssu.igotIt.resolution.dto.ResolutionUniqueIdGetResponse
 import com.yourssu.igotIt.user.domain.User
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 @Service
 class ResolutionService(
@@ -28,6 +30,7 @@ class ResolutionService(
                 content = content,
                 status = Status.INPROGRESS,
                 email = mail,
+                uniqueId = generateLink(),
                 user = user
             )
         }.run { resolutionRepository.save(this) }
@@ -35,6 +38,10 @@ class ResolutionService(
         letterService.createLetterForMe(resolution, dto.letter, user.nickname!!)
 
         return ResolutionCreateResponse(resolution.id!!)
+    }
+
+    private fun generateLink(): String {
+        return UUID.randomUUID().toString()
     }
 
     @Transactional(readOnly = true)
@@ -53,6 +60,7 @@ class ResolutionService(
         }
     }
 
+    @Transactional
     fun delete(resolutionId: Long, user: User) {
         val resolution = resolutionQueryHandler.findById(resolutionId)
         if (!checkPermission(resolution, user)) {
@@ -63,5 +71,11 @@ class ResolutionService(
 
     private fun checkPermission(resolution: Resolution, user: User): Boolean {
         return resolution.user.id == user.id
+    }
+
+    @Transactional(readOnly = true)
+    fun getUniqueId(resolutionId: Long): ResolutionUniqueIdGetResponse {
+        val resolution = resolutionQueryHandler.findById(resolutionId)
+        return ResolutionUniqueIdGetResponse(resolution.uniqueId)
     }
 }
