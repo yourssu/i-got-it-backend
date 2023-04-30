@@ -63,10 +63,11 @@ class LetterService(
         return !isResolutionWriter(userId, resolution)
     }
 
-    fun isResolutionWriter(userId: Long?, resolution: Resolution): Boolean {
+    private fun isResolutionWriter(userId: Long?, resolution: Resolution): Boolean {
         return (userId != null && userId == resolution.user.id)
     }
 
+    @Transactional
     fun delete(resolutionId: Long, letterId: Long, user: User) {
         val resolution = resolutionQueryHandler.findById(resolutionId)
         if (!isResolutionWriter(user.id, resolution)) {

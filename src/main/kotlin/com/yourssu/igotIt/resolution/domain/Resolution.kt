@@ -1,6 +1,7 @@
 package com.yourssu.igotIt.resolution.domain
 
 import com.yourssu.igotIt.common.domain.BaseTimeEntity
+import com.yourssu.igotIt.letter.domain.Letter
 import com.yourssu.igotIt.resolution.domain.vo.Status
 import com.yourssu.igotIt.user.domain.User
 import javax.persistence.*
@@ -26,7 +27,10 @@ class Resolution (
 
     @field:ManyToOne(fetch = FetchType.LAZY)
     @field:JoinColumn(name = "user_id")
-    val user: User
+    val user: User,
+
+    @field:OneToMany(mappedBy = "resolution", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    val letters: MutableList<Letter> = arrayListOf()
 
 ) : BaseTimeEntity() {
 

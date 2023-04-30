@@ -30,4 +30,9 @@ class ResolutionController(
         val response = resolutionService.get(resolutionId)
         return ResponseEntity.ok(response)
     }
+
+    @DeleteMapping("/resolutions/{resolutionId}")
+    fun delete(@PathVariable resolutionId: Long, @LoginUser user: User) {
+        resolutionService.delete(resolutionId, user)
+    }
 }
