@@ -36,6 +36,6 @@ data class ResolutionDoneMailRequest(
     }
 
     private fun generateLink(baseUrl: String): String {
-        return "${baseUrl}/resolutions/${resolution.id}"
+        return "${baseUrl}/resolutions/${resolution.uniqueId}"
     }
 }
