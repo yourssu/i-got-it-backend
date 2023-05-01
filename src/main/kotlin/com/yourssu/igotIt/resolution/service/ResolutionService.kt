@@ -11,6 +11,7 @@ import com.yourssu.igotIt.resolution.dto.ResolutionCreateResponse
 import com.yourssu.igotIt.resolution.dto.ResolutionGetResponse
 import com.yourssu.igotIt.resolution.dto.ResolutionUniqueIdGetResponse
 import com.yourssu.igotIt.user.domain.User
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -46,16 +47,18 @@ class ResolutionService(
 
     @Transactional(readOnly = true)
     fun get(resolutionId: Long): ResolutionGetResponse {
-        val resolution = resolutionQueryHandler.findById(resolutionId)
-        val dday = TimeUtil.calculateDday(resolution.createdAt!!, resolution.period)
+        val resolution = resolutionRepository.findByIdOrNull(resolutionId)
+            ?: return ResolutionGetResponse.generateEmpty()
 
+        val dday = TimeUtil.calculateDday(resolution.createdAt!!, resolution.period)
         return with(resolution) {
             ResolutionGetResponse(
                 userId = user.id!!,
                 nickname = user.nickname!!,
                 content = content,
                 dday = dday,
-                status = status
+                status = status,
+                isDeleted = false
             )
         }
     }
