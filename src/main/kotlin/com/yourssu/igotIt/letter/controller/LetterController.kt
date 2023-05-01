@@ -43,10 +43,10 @@ class LetterController(
 
     @DeleteMapping("/resolutions/{resolutionId}/letters/{letterId}")
     fun delete(
-        @PathVariable resolutionId: Long,
+        @PathVariable("resolutionId") resolutionUniqueId: String,
         @PathVariable letterId: Long,
         @LoginUser user: User
     ) {
-        letterService.delete(resolutionId, letterId, user)
+        letterService.delete(resolutionUniqueId, letterId, user)
     }
 }
