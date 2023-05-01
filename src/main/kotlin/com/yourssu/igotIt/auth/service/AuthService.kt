@@ -24,9 +24,9 @@ class AuthService(
         val oAuthInfo = requestOAuthInfoService.request(dto)
         val user = findOrCreateUser(oAuthInfo)
         val token = jwtGenerator.generateAccessToken(user.id!!)
-        val resolutionId = resolutionRepository.findByUser(user)?.id
+        val resolutionUniqueId = resolutionRepository.findByUser(user)?.uniqueId
 
-        return LoginResponseDto(user.id, user.nickname, resolutionId, token)
+        return LoginResponseDto(user.id, user.nickname, resolutionUniqueId, token)
     }
 
     private fun findOrCreateUser(oAuthInfo: OAuthInfo): User {
