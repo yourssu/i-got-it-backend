@@ -1,5 +1,6 @@
 package com.yourssu.igotIt.resolution.domain
 
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -8,7 +9,7 @@ class ResolutionQueryHandlerImpl(
 ): ResolutionQueryHandler {
 
     override fun findById(id: Long): Resolution {
-        return resolutionRepository.findById(id)
-            .orElseThrow{ RuntimeException("존재하지 않는 resolution 입니다.") }
+        return resolutionRepository.findByIdOrNull(id)
+            ?: throw RuntimeException("존재하지 않는 resolution 입니다.")
     }
 }
