@@ -7,14 +7,17 @@ import com.yourssu.igotIt.letter.dto.LetterCreateResponse
 import com.yourssu.igotIt.letter.dto.LetterGetResponse
 import com.yourssu.igotIt.resolution.domain.Resolution
 import com.yourssu.igotIt.resolution.domain.ResolutionQueryHandler
+import com.yourssu.igotIt.resolution.domain.ResolutionRepository
 import com.yourssu.igotIt.user.domain.User
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class LetterService(
     private val letterRepository: LetterRepository,
-    private val resolutionQueryHandler: ResolutionQueryHandler
+    private val resolutionQueryHandler: ResolutionQueryHandler,
+    private val resolutionRepository: ResolutionRepository
 ) {
 
     @Transactional
@@ -41,9 +44,10 @@ class LetterService(
 
     @Transactional(readOnly = true)
     fun get(resolutionId: Long, currentUserId: Long?): LetterGetResponse {
-        val resolution = resolutionQueryHandler.findById(resolutionId)
-        val isLocked = isLocked(currentUserId, resolution)
+        val resolution = resolutionRepository.findByIdOrNull(resolutionId)
+            ?: return LetterGetResponse.generateEmpty()
 
+        val isLocked = isLocked(currentUserId, resolution)
         val letters = letterRepository.findAllByResolution(resolution)
             .map { with(it) {
                 LetterGetResponse.LetterDto(
@@ -53,7 +57,7 @@ class LetterService(
                 ) }
             }.toMutableList()
 
-        return LetterGetResponse(isLocked, letters)
+        return LetterGetResponse(isLocked, letters, false)
     }
 
     private fun isLocked(userId: Long?, resolution: Resolution): Boolean {
