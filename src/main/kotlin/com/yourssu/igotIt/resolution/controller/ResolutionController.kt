@@ -26,19 +26,13 @@ class ResolutionController(
     }
 
     @GetMapping("/resolutions/{resolutionId}")
-    fun get(@PathVariable resolutionId: Long): ResponseEntity<ResolutionGetResponse> {
-        val response = resolutionService.get(resolutionId)
+    fun get(@PathVariable("resolutionId") resolutionUniqueId: String): ResponseEntity<ResolutionGetResponse> {
+        val response = resolutionService.get(resolutionUniqueId)
         return ResponseEntity.ok(response)
     }
 
     @DeleteMapping("/resolutions/{resolutionId}")
-    fun delete(@PathVariable resolutionId: Long, @LoginUser user: User) {
-        resolutionService.delete(resolutionId, user)
-    }
-
-    @GetMapping("/resolutions/{resolutionId}/uuid")
-    fun getUniqueId(@PathVariable resolutionId: Long) {
-        val response = resolutionService.getUniqueId(resolutionId)
-        ResponseEntity.ok(response)
+    fun delete(@PathVariable("resolutionId") resolutionUniqueId: String, @LoginUser user: User) {
+        resolutionService.delete(resolutionUniqueId, user)
     }
 }

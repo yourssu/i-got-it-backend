@@ -26,17 +26,18 @@ class LetterController(
     @PostMapping("/resolutions/{resolutionId}/letters")
     fun create(
         @Validated @RequestBody request: LetterCreateRequest,
-        @PathVariable resolutionId: Long
+        @PathVariable("resolutionId") resolutionUniqueId: String
     ) : ResponseEntity<LetterCreateResponse> {
-        val response = letterService.create(request, resolutionId)
+        val response = letterService.create(request, resolutionUniqueId)
         return ResponseEntity.ok(response)
     }
 
     @GetMapping("/resolutions/{resolutionId}/letters")
     fun get(
         @RequestParam userId: Long? = null,
-        @PathVariable resolutionId: Long): ResponseEntity<LetterGetResponse> {
-        val response = letterService.get(resolutionId, userId)
+        @PathVariable("resolutionId") resolutionUniqueId: String
+    ): ResponseEntity<LetterGetResponse> {
+        val response = letterService.get(resolutionUniqueId, userId)
         return ResponseEntity.ok(response)
     }
 

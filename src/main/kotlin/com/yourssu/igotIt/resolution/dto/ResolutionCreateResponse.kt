@@ -1,5 +1,5 @@
 package com.yourssu.igotIt.resolution.dto
 
 data class ResolutionCreateResponse(
-    val resolutionId: Long
+    val resolutionUniqueId: String
 )

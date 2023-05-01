@@ -21,8 +21,8 @@ class LetterService(
 ) {
 
     @Transactional
-    fun create(dto: LetterCreateRequest, resolutionId: Long): LetterCreateResponse {
-        val resolution = resolutionQueryHandler.findById(resolutionId)
+    fun create(dto: LetterCreateRequest, resolutionUniqueId: String): LetterCreateResponse {
+        val resolution = resolutionQueryHandler.findByUniqueId(resolutionUniqueId)
         val letter = with(dto) {
             Letter(
                 nickname = nickname,
@@ -43,8 +43,8 @@ class LetterService(
     }
 
     @Transactional(readOnly = true)
-    fun get(resolutionId: Long, currentUserId: Long?): LetterGetResponse {
-        val resolution = resolutionRepository.findByIdOrNull(resolutionId)
+    fun get(resolutionUniqueId: String, currentUserId: Long?): LetterGetResponse {
+        val resolution = resolutionRepository.findByUniqueId(resolutionUniqueId)
             ?: return LetterGetResponse.generateEmpty()
 
         val isLocked = isLocked(currentUserId, resolution)
@@ -72,8 +72,8 @@ class LetterService(
     }
 
     @Transactional
-    fun delete(resolutionId: Long, letterId: Long, user: User) {
-        val resolution = resolutionQueryHandler.findById(resolutionId)
+    fun delete(resolutionUniqueId: String, letterId: Long, user: User) {
+        val resolution = resolutionQueryHandler.findByUniqueId(resolutionUniqueId)
         if (!isResolutionWriter(user.id, resolution)) {
             throw RuntimeException("결심 생성자만 쪽지를 삭제할 수 있습니다.")
         }
