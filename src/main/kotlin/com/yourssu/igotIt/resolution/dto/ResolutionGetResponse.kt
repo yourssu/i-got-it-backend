@@ -7,5 +7,19 @@ data class ResolutionGetResponse(
     val nickname: String,
     val content: String,
     val dday: Int,
-    val status: Status
-)
+    val status: Status,
+    val isDeleted: Boolean,
+) {
+    companion object {
+        fun generateEmpty(): ResolutionGetResponse {
+            return ResolutionGetResponse(
+                userId = -1,
+                nickname = "",
+                content = "",
+                dday = -1,
+                status = Status.NONE,
+                isDeleted = true
+            )
+        }
+    }
+}
