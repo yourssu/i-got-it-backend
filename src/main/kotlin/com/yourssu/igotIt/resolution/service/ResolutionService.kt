@@ -9,9 +9,7 @@ import com.yourssu.igotIt.resolution.domain.vo.Status
 import com.yourssu.igotIt.resolution.dto.ResolutionCreateRequest
 import com.yourssu.igotIt.resolution.dto.ResolutionCreateResponse
 import com.yourssu.igotIt.resolution.dto.ResolutionGetResponse
-import com.yourssu.igotIt.resolution.dto.ResolutionUniqueIdGetResponse
 import com.yourssu.igotIt.user.domain.User
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -38,7 +36,7 @@ class ResolutionService(
 
         letterService.createLetterForMe(resolution, dto.letter, user.nickname!!)
 
-        return ResolutionCreateResponse(resolution.id!!)
+        return ResolutionCreateResponse(resolution.uniqueId)
     }
 
     private fun generateLink(): String {
@@ -46,8 +44,8 @@ class ResolutionService(
     }
 
     @Transactional(readOnly = true)
-    fun get(resolutionId: Long): ResolutionGetResponse {
-        val resolution = resolutionRepository.findByIdOrNull(resolutionId)
+    fun get(resolutionUniqueId: String): ResolutionGetResponse {
+        val resolution = resolutionRepository.findByUniqueId(resolutionUniqueId)
             ?: return ResolutionGetResponse.generateEmpty()
 
         val dday = TimeUtil.calculateDday(resolution.createdAt!!, resolution.period)
@@ -64,21 +62,15 @@ class ResolutionService(
     }
 
     @Transactional
-    fun delete(resolutionId: Long, user: User) {
-        val resolution = resolutionQueryHandler.findById(resolutionId)
+    fun delete(resolutionUniqueId: String, user: User) {
+        val resolution = resolutionQueryHandler.findByUniqueId(resolutionUniqueId)
         if (!checkPermission(resolution, user)) {
             throw RuntimeException("결심 작성자만 삭제 가능합니다.")
         }
-        resolutionRepository.deleteById(resolutionId)
+        resolutionRepository.deleteById(resolution.id!!)
     }
 
     private fun checkPermission(resolution: Resolution, user: User): Boolean {
         return resolution.user.id == user.id
-    }
-
-    @Transactional(readOnly = true)
-    fun getUniqueId(resolutionId: Long): ResolutionUniqueIdGetResponse {
-        val resolution = resolutionQueryHandler.findById(resolutionId)
-        return ResolutionUniqueIdGetResponse(resolution.uniqueId)
     }
 }
