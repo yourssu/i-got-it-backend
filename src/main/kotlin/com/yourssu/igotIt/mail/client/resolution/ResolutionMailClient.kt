@@ -29,7 +29,7 @@ class ResolutionMailClient(
             TimeUtil.calculateDday(createdAt!!, period)
         }
 
-        return isInProgress && (dday <= 0)
+        return isInProgress && (dday < 0)
     }
 
     private fun isPresentEmail(resolution: Resolution): Boolean {
