@@ -4,6 +4,7 @@ import com.yourssu.igotIt.auth.domain.OAuthApiClient
 import com.yourssu.igotIt.auth.domain.OAuthInfo
 import com.yourssu.igotIt.auth.domain.OAuthLoginRequest
 import com.yourssu.igotIt.auth.domain.OAuthProvider
+import com.yourssu.igotIt.auth.exception.NotExistOAuthProviderException
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,7 +19,7 @@ class RequestOAuthInfoService(
 
     fun request(dto: OAuthLoginRequest): OAuthInfo {
         val client = clients[dto.oAuthProvider()]
-            ?: throw RuntimeException("존재하지 않는 OAuthProvider 입니다.")
+            ?: throw NotExistOAuthProviderException("존재하지 않는 OAuthProvider 입니다.")
 
         val accessToken = client.requestAccessToken(dto)
 

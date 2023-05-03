@@ -57,9 +57,6 @@ class KakaoApiClient(
 
         val request = HttpEntity<MultiValueMap<String, String>>(body, httpHeaders)
 
-        val response: KakaoInfo = restTemplate.postForObject(url, request, KakaoInfo::class)
-        return response
-
-//        return restTemplate.postForObject(url, request, KakaoInfo::class)
+        return restTemplate.postForObject<KakaoInfo>(url, request, KakaoInfo::class)
     }
 }
