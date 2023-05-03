@@ -9,12 +9,8 @@ class JwtExtractor(
 ) {
 
     fun extractUserId(token: String): Long {
-        try {
-            return extractAllClaims(token)
-                .get("userId", Long::class.javaObjectType)
-        } catch (e: Exception) {
-            throw RuntimeException("Jwt claim에 userId가 존재하지 않습니다.")
-        }
+        return extractAllClaims(token)
+            .get("userId", Long::class.javaObjectType)
     }
 
     private fun extractAllClaims(token: String): Claims {

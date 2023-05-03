@@ -1,5 +1,7 @@
 package com.yourssu.igotIt.user.domain
 
+import com.yourssu.igotIt.user.exception.UserNotFoundException
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -9,7 +11,7 @@ class UserQueryHandlerImpl(
     ) : UserQueryHandler {
 
     override fun findById(userId: Long): User {
-        return userRepository.findById(userId)
-            .orElseThrow{ RuntimeException("존재하지 않는 user입니다.") }
+        return userRepository.findByIdOrNull(userId)
+            ?: throw UserNotFoundException("존재하지 않는 유저입니다.")
     }
 }

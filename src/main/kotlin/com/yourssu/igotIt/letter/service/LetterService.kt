@@ -5,6 +5,7 @@ import com.yourssu.igotIt.letter.domain.LetterRepository
 import com.yourssu.igotIt.letter.dto.LetterCreateRequest
 import com.yourssu.igotIt.letter.dto.LetterCreateResponse
 import com.yourssu.igotIt.letter.dto.LetterGetResponse
+import com.yourssu.igotIt.letter.exception.LetterUnAuthorizationException
 import com.yourssu.igotIt.resolution.domain.Resolution
 import com.yourssu.igotIt.resolution.domain.ResolutionQueryHandler
 import com.yourssu.igotIt.resolution.domain.ResolutionRepository
@@ -75,7 +76,7 @@ class LetterService(
     fun delete(resolutionUniqueId: String, letterId: Long, user: User) {
         val resolution = resolutionQueryHandler.findByUniqueId(resolutionUniqueId)
         if (!isResolutionWriter(user.id, resolution)) {
-            throw RuntimeException("결심 생성자만 쪽지를 삭제할 수 있습니다.")
+            throw LetterUnAuthorizationException("결심 생성자만 쪽지를 삭제할 수 있습니다.")
         }
 
         letterRepository.deleteById(letterId)

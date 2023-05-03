@@ -9,6 +9,7 @@ import com.yourssu.igotIt.resolution.domain.vo.Status
 import com.yourssu.igotIt.resolution.dto.ResolutionCreateRequest
 import com.yourssu.igotIt.resolution.dto.ResolutionCreateResponse
 import com.yourssu.igotIt.resolution.dto.ResolutionGetResponse
+import com.yourssu.igotIt.resolution.exception.ResolutionInvalidAuthorizationException
 import com.yourssu.igotIt.user.domain.User
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -65,7 +66,7 @@ class ResolutionService(
     fun delete(resolutionUniqueId: String, user: User) {
         val resolution = resolutionQueryHandler.findByUniqueId(resolutionUniqueId)
         if (!checkPermission(resolution, user)) {
-            throw RuntimeException("결심 작성자만 삭제 가능합니다.")
+            throw ResolutionInvalidAuthorizationException("결심 작성자만 삭제 가능합니다.")
         }
         resolutionRepository.deleteById(resolution.id!!)
     }
