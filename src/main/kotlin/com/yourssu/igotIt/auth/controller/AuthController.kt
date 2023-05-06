@@ -1,5 +1,6 @@
 package com.yourssu.igotIt.auth.controller
 
+import com.yourssu.igotIt.auth.dto.AccessTokenRefreshResponse
 import com.yourssu.igotIt.auth.dto.LoginInfoRequestDto
 import com.yourssu.igotIt.auth.dto.LoginResponseDto
 import com.yourssu.igotIt.auth.infra.kakao.KakaoLoginRequest
@@ -9,10 +10,7 @@ import com.yourssu.igotIt.user.domain.User
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -33,5 +31,16 @@ class AuthController(
         @Validated @RequestBody request: LoginInfoRequestDto
     ) {
         authService.updateInfo(request, user)
+    }
+
+    @PostMapping("/token/refresh")
+    fun refresh(@LoginUser user: User): ResponseEntity<AccessTokenRefreshResponse> {
+        val response = authService.refresh(user)
+        return ResponseEntity.ok(response)
+    }
+
+    @DeleteMapping("/withdraw")
+    fun withdraw(@LoginUser user: User) {
+        authService.withdraw(user)
     }
 }
