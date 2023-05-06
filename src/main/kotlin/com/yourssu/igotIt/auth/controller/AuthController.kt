@@ -1,5 +1,6 @@
 package com.yourssu.igotIt.auth.controller
 
+import com.yourssu.igotIt.auth.dto.AccessTokenRefreshResponse
 import com.yourssu.igotIt.auth.dto.LoginInfoRequestDto
 import com.yourssu.igotIt.auth.dto.LoginResponseDto
 import com.yourssu.igotIt.auth.infra.kakao.KakaoLoginRequest
@@ -33,5 +34,11 @@ class AuthController(
         @Validated @RequestBody request: LoginInfoRequestDto
     ) {
         authService.updateInfo(request, user)
+    }
+
+    @PostMapping("/token/refresh")
+    fun refresh(@LoginUser user: User): ResponseEntity<AccessTokenRefreshResponse> {
+        val response = authService.refresh(user)
+        return ResponseEntity.ok(response)
     }
 }

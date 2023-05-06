@@ -2,6 +2,7 @@ package com.yourssu.igotIt.auth.service
 
 import com.yourssu.igotIt.auth.domain.OAuthInfo
 import com.yourssu.igotIt.auth.domain.OAuthLoginRequest
+import com.yourssu.igotIt.auth.dto.AccessTokenRefreshResponse
 import com.yourssu.igotIt.auth.dto.LoginInfoRequestDto
 import com.yourssu.igotIt.auth.dto.LoginResponseDto
 import com.yourssu.igotIt.resolution.domain.ResolutionRepository
@@ -44,5 +45,11 @@ class AuthService(
     fun updateInfo(dto: LoginInfoRequestDto, user: User) {
         user.updateNickname(dto.nickname)
         userRepository.save(user)
+    }
+
+    @Transactional
+    fun refresh(user: User): AccessTokenRefreshResponse {
+        return jwtGenerator.generateAccessToken(user.id!!)
+            .run { AccessTokenRefreshResponse(this) }
     }
 }
