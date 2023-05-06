@@ -10,10 +10,7 @@ import com.yourssu.igotIt.user.domain.User
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -40,5 +37,10 @@ class AuthController(
     fun refresh(@LoginUser user: User): ResponseEntity<AccessTokenRefreshResponse> {
         val response = authService.refresh(user)
         return ResponseEntity.ok(response)
+    }
+
+    @DeleteMapping("/withdraw")
+    fun withdraw(@LoginUser user: User) {
+        authService.withdraw(user)
     }
 }
