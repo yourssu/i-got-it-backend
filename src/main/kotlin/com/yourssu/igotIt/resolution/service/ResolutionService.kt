@@ -66,7 +66,7 @@ class ResolutionService(
                 userId = user.id!!,
                 nickname = user.nickname!!,
                 content = content,
-                dday = dday,
+                dday = dday + 1,
                 status = status,
                 isDeleted = false
             )
