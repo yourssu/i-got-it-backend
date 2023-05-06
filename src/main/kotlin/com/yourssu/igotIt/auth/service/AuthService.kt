@@ -2,8 +2,11 @@ package com.yourssu.igotIt.auth.service
 
 import com.yourssu.igotIt.auth.domain.OAuthInfo
 import com.yourssu.igotIt.auth.domain.OAuthLoginRequest
+import com.yourssu.igotIt.auth.dto.AccessTokenRefreshResponse
 import com.yourssu.igotIt.auth.dto.LoginInfoRequestDto
 import com.yourssu.igotIt.auth.dto.LoginResponseDto
+import com.yourssu.igotIt.letter.domain.LetterRepository
+import com.yourssu.igotIt.resolution.domain.Resolution
 import com.yourssu.igotIt.resolution.domain.ResolutionRepository
 import com.yourssu.igotIt.security.jwt.JwtGenerator
 import com.yourssu.igotIt.user.domain.User
@@ -16,6 +19,7 @@ class AuthService(
     private val requestOAuthInfoService: RequestOAuthInfoService,
     private val userRepository: UserRepository,
     private val resolutionRepository: ResolutionRepository,
+    private val letterRepository: LetterRepository,
     private val jwtGenerator: JwtGenerator
 ) {
 
@@ -44,5 +48,23 @@ class AuthService(
     fun updateInfo(dto: LoginInfoRequestDto, user: User) {
         user.updateNickname(dto.nickname)
         userRepository.save(user)
+    }
+
+    fun refresh(user: User): AccessTokenRefreshResponse {
+        return jwtGenerator.generateAccessToken(user.id!!)
+            .run { AccessTokenRefreshResponse(this) }
+    }
+
+    @Transactional
+    fun withdraw(user: User) {
+        deleteChild(user)
+        userRepository.delete(user)
+    }
+
+    private fun deleteChild(user: User) {
+        resolutionRepository.findByUser(user)?.let {
+            letterRepository.deleteAllByResolution(it)
+            resolutionRepository.delete(it)
+        }
     }
 }
