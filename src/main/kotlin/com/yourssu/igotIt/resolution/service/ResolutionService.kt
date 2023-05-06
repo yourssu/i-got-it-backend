@@ -24,6 +24,18 @@ class ResolutionService(
 
     @Transactional
     fun create(dto: ResolutionCreateRequest, user: User): ResolutionCreateResponse {
+        resolutionRepository.findByUser(user)?.let {
+            return ResolutionCreateResponse(true, it.uniqueId)
+        }
+
+        val resolution = createResolution(dto, user);
+        return ResolutionCreateResponse(
+            isExisted = false,
+            resolutionId = resolution.uniqueId
+        )
+    }
+
+    fun createResolution(dto: ResolutionCreateRequest, user: User): Resolution {
         val resolution = with(dto) {
             Resolution(
                 period = period,
@@ -36,8 +48,7 @@ class ResolutionService(
         }.run { resolutionRepository.save(this) }
 
         letterService.createLetterForMe(resolution, dto.letter, user.nickname!!)
-
-        return ResolutionCreateResponse(resolution.uniqueId)
+        return resolution;
     }
 
     private fun generateLink(): String {
