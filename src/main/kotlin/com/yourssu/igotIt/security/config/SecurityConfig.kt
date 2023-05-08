@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.DefaultSecurityFilterChain
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
@@ -19,7 +20,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
-    private val jwtProvider: JwtProvider
+    private val jwtProvider: JwtProvider,
+    private val authenticationEntryPoint: AuthenticationEntryPoint
 ) {
 
     // TODO: 로그인 안한 사용자 - 쪽지 생성, 결심 조회도 풀어야됨
@@ -51,7 +53,9 @@ class SecurityConfig(
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { it.anyRequest().authenticated()
                 .and()
-                .apply(JwtSecurityConfig(jwtProvider))
+                .apply(JwtSecurityConfig(jwtProvider, authenticationEntryPoint))
+                .and()
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
             }
 
         return http.build()
