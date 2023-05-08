@@ -79,7 +79,7 @@ class ResolutionService(
         if (!checkPermission(resolution, user)) {
             throw ResolutionInvalidAuthorizationException("결심 작성자만 삭제 가능합니다.")
         }
-        resolutionRepository.deleteById(resolution.id!!)
+        resolutionRepository.delete(resolution)
     }
 
     private fun checkPermission(resolution: Resolution, user: User): Boolean {
