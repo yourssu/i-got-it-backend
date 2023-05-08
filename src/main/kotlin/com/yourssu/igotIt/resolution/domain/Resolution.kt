@@ -37,6 +37,9 @@ class Resolution (
 
 ) : BaseTimeEntity() {
 
+    val existsEmail: Boolean
+            get() = !this.email.isNullOrEmpty()
+
     fun updateStatus() {
         this.status = Status.DONE
     }
