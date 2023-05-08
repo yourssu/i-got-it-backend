@@ -18,8 +18,8 @@ class ResolutionMailClient(
     @Transactional
     override fun generateRequest(): List<MailRequest> {
         return resolutionRepository.findAll()
-            .filter { isDone(it) && isPresentEmail(it) }
-            .map { it.updateStatus().run { generateDto(it) } }
+            .filter { isDone(it) }
+            .mapNotNull { it.updateStatus().run { getDtoOrNull(it) } }
             .toList()
     }
 
@@ -29,11 +29,14 @@ class ResolutionMailClient(
             TimeUtil.calculateDday(createdAt!!, period)
         }
 
-        return isInProgress && (dday < 0)
+        return isInProgress && (dday <= 0)
     }
 
-    private fun isPresentEmail(resolution: Resolution): Boolean {
-        return !resolution.email.isNullOrEmpty()
+    private fun getDtoOrNull(resolution: Resolution): ResolutionDoneMailRequest? {
+        if (resolution.existsEmail) {
+            return generateDto(resolution)
+        }
+        return null;
     }
 
     private fun generateDto(resolution: Resolution): ResolutionDoneMailRequest {

@@ -37,7 +37,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
         return ErrorResponse(
             status = status.value(),
             error = status.name,
-            code = ErrorCode.BAD_REQUEST.code,
+            code = ErrorCode.DEFAULT.code,
             message = ex.bindingResult.fieldError?.defaultMessage ?: "잘못된 형식의 입력 값 입니다.",
             path = httpServletRequest.requestURI.toString()
         ).run { ResponseEntity(this, status) }
@@ -52,7 +52,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
         return ErrorResponse(
             status = status.value(),
             error = status.name,
-            code = ErrorCode.INTERNAL_SERVER.code,
+            code = ErrorCode.DEFAULT.code,
             message = "서버 내부 오류 입니다",
             path = httpServletRequest.requestURI.toString()
         ).run { ResponseEntity(this, status) }
