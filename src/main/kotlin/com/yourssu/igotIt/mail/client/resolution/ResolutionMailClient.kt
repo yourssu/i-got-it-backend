@@ -25,11 +25,10 @@ class ResolutionMailClient(
 
     private fun isDone(resolution: Resolution): Boolean {
         val isInProgress = resolution.status.isInProgress()
-        val dday = with(resolution) {
-            TimeUtil.calculateDday(createdAt!!, period)
+        val isEnd = with(resolution) {
+            TimeUtil.isEndDday(createdAt!!, period)
         }
-
-        return isInProgress && (dday <= 0)
+        return isInProgress && isEnd
     }
 
     private fun getDtoOrNull(resolution: Resolution): ResolutionDoneMailRequest? {

@@ -10,5 +10,11 @@ class TimeUtil {
             val now = LocalDateTime.now()
             return ChronoUnit.DAYS.between(now, endDate).toInt()
         }
+
+        fun isEndDday(startDate: LocalDateTime, period: Int): Boolean {
+            val endDate = startDate.plusDays(period.toLong())
+            val now = LocalDateTime.now()
+            return endDate.isBefore(now)
+        }
     }
 }
