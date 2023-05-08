@@ -5,7 +5,7 @@ import javax.validation.constraints.Size
 
 data class LetterCreateRequest(
     @field:NotNull
-    @field:Size(max = 3)
+    @field:Size(max = 5)
     val nickname: String,
 
     @field:NotNull
