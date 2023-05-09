@@ -31,11 +31,7 @@ data class ResolutionDoneMailRequest(
             setVariable("period", resolution.period)
             setVariable("content", resolution.content)
             setVariable("nickname", user.nickname)
-            setVariable("link", generateLink(baseUrl))
+            setVariable("link", baseUrl)
         }
-    }
-
-    private fun generateLink(baseUrl: String): String {
-        return "${baseUrl}/resolutions/${resolution.uniqueId}"
     }
 }
