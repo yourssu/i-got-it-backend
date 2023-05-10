@@ -1,4 +1,4 @@
-package com.yourssu.igotIt.resolution.domain.vo
+package com.yourssu.igotIt.resolution.domain.resolution.vo
 
 enum class Status {
     INPROGRESS,

@@ -1,8 +1,8 @@
-package com.yourssu.igotIt.resolution.domain
+package com.yourssu.igotIt.resolution.domain.resolution
 
 import com.yourssu.igotIt.common.domain.BaseTimeEntity
 import com.yourssu.igotIt.letter.domain.Letter
-import com.yourssu.igotIt.resolution.domain.vo.Status
+import com.yourssu.igotIt.resolution.domain.resolution.vo.Status
 import com.yourssu.igotIt.user.domain.User
 import javax.persistence.*
 
