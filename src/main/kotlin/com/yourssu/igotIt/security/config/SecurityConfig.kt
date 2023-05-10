@@ -37,6 +37,7 @@ class SecurityConfig(
                 .antMatchers("/swagger-ui/**")
                 .antMatchers("/v3/api-docs/**")
                 .antMatchers("/api/v1/mail/test")
+                .antMatchers("/api/v1/resolutions/history/count")
         }
     }
 
