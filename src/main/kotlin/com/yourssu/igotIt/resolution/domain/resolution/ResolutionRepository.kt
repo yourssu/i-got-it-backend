@@ -1,4 +1,4 @@
-package com.yourssu.igotIt.resolution.domain
+package com.yourssu.igotIt.resolution.domain.resolution
 
 import com.yourssu.igotIt.user.domain.User
 import org.springframework.data.jpa.repository.JpaRepository

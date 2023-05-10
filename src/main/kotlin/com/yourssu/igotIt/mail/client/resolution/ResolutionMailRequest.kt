@@ -1,7 +1,7 @@
 package com.yourssu.igotIt.mail.client.resolution
 
 import com.yourssu.igotIt.mail.domain.MailRequest
-import com.yourssu.igotIt.resolution.domain.Resolution
+import com.yourssu.igotIt.resolution.domain.resolution.Resolution
 import com.yourssu.igotIt.user.domain.User
 import org.thymeleaf.context.Context
 

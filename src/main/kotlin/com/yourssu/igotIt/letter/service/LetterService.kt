@@ -6,11 +6,10 @@ import com.yourssu.igotIt.letter.dto.LetterCreateRequest
 import com.yourssu.igotIt.letter.dto.LetterCreateResponse
 import com.yourssu.igotIt.letter.dto.LetterGetResponse
 import com.yourssu.igotIt.letter.exception.LetterUnAuthorizationException
-import com.yourssu.igotIt.resolution.domain.Resolution
-import com.yourssu.igotIt.resolution.domain.ResolutionQueryHandler
-import com.yourssu.igotIt.resolution.domain.ResolutionRepository
+import com.yourssu.igotIt.resolution.domain.resolution.Resolution
+import com.yourssu.igotIt.resolution.domain.resolution.ResolutionQueryHandler
+import com.yourssu.igotIt.resolution.domain.resolution.ResolutionRepository
 import com.yourssu.igotIt.user.domain.User
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -35,6 +34,7 @@ class LetterService(
         return LetterCreateResponse(letter.id!!)
     }
 
+    @Transactional
     fun createLetterForMe(resolution: Resolution, content: String, nickname: String) {
         Letter(
             nickname = nickname,

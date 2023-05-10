@@ -2,7 +2,6 @@ package com.yourssu.igotIt.mail
 
 import com.yourssu.igotIt.mail.client.resolution.ResolutionMailClient
 import com.yourssu.igotIt.mail.service.MailService
-import com.yourssu.igotIt.resolution.domain.ResolutionQueryHandler
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 

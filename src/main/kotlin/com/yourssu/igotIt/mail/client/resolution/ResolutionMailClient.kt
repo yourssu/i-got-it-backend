@@ -3,9 +3,8 @@ package com.yourssu.igotIt.mail.client.resolution
 import com.yourssu.igotIt.common.utils.TimeUtil
 import com.yourssu.igotIt.mail.domain.MailClient
 import com.yourssu.igotIt.mail.domain.MailRequest
-import com.yourssu.igotIt.resolution.domain.Resolution
-import com.yourssu.igotIt.resolution.domain.ResolutionRepository
-import com.yourssu.igotIt.resolution.domain.vo.Status
+import com.yourssu.igotIt.resolution.domain.resolution.Resolution
+import com.yourssu.igotIt.resolution.domain.resolution.ResolutionRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
