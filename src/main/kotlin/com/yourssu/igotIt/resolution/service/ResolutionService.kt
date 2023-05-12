@@ -8,7 +8,6 @@ import com.yourssu.igotIt.resolution.domain.resolution.ResolutionRepository
 import com.yourssu.igotIt.resolution.domain.resolution.vo.Status
 import com.yourssu.igotIt.resolution.domain.resolutionHistory.ResolutionHistory
 import com.yourssu.igotIt.resolution.domain.resolutionHistory.ResolutionHistoryRepository
-import com.yourssu.igotIt.resolution.domain.resolutionHistory.vo.Action
 import com.yourssu.igotIt.resolution.dto.ResolutionCreateRequest
 import com.yourssu.igotIt.resolution.dto.ResolutionCreateResponse
 import com.yourssu.igotIt.resolution.dto.ResolutionGetResponse
@@ -51,17 +50,15 @@ class ResolutionService(
             )
         }.run { resolutionRepository.save(this) }
 
-        saveResolutionHistory(resolution, Action.CREATE)
+        createResolutionHistory(resolution)
         letterService.createLetterForMe(resolution, dto.letter, user.nickname!!)
         return resolution
     }
 
-    private fun saveResolutionHistory(resolution: Resolution, action: Action) {
-        println(resolution.id)
-        val resolutionHistory = resolutionHistoryRepository.save(ResolutionHistory(
-            resolutionId = resolution.id!!,
-            action = action
-        ))
+    private fun createResolutionHistory(resolution: Resolution) {
+        val resolutionHistory = resolutionHistoryRepository.save(
+            ResolutionHistory(resolutionId = resolution.id!!)
+        )
         println(resolutionHistory.id)
     }
 
@@ -93,7 +90,6 @@ class ResolutionService(
         if (!checkPermission(resolution, user)) {
             throw ResolutionInvalidAuthorizationException("결심 작성자만 삭제 가능합니다.")
         }
-        saveResolutionHistory(resolution, Action.DELETE)
         resolutionRepository.delete(resolution)
     }
 
